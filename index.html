@@ -159,7 +159,7 @@
 
     function sendResults() {
       const email = document.getElementById('email').value;
-      fetch('https://script.google.com/macros/s/AKfycbxrDpsMf6bwmxKrNOjsLwc5FqvRfGm-_cKe0tCdSaMAAbQzUqL7jEUnsWUqlUqQ98_P/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbxMharAaFudMlu3LtY521wQBS6-SakgSElXMQuvEpysN1ASqTN6_0Bac9mL9sUKP53m6A/exec', {
         method: 'POST',
         body: JSON.stringify({ email, score, time }),
         headers: { 'Content-Type': 'application/json' }
