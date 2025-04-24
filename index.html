@@ -29,7 +29,7 @@
       cursor: pointer;
       margin: 10px;
     }
-    #timer {
+    #timer, #score, #lives {
       margin-top: 20px;
       font-size: 1.2em;
     }
@@ -38,72 +38,47 @@
       margin-top: 30px;
       color: #00ff00;
     }
+    .correct {
+      color: #00ff00;
+      font-weight: bold;
+    }
+    .incorrect {
+      color: #ff0000;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Cybersecurity Escape</h1>
     <div id="timer">Time: 0s</div>
+    <div id="score">Score: 0</div>
+    <div id="lives">Lives: 3</div>
     <div id="questions"></div>
     <div id="finalMessage"></div>
   </div>
 
+  <audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="incorrectSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+
   <script>
     const questions = [
-      {
-        question: "Which password is the strongest?",
-        options: ["password123", "Verano2024", "T&g9$Lp!2z"],
-        answer: 2
-      },
-      {
-        question: "Which email looks suspicious?",
-        options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"],
-        answer: 2
-      },
-      {
-        question: "What do you do with a security alert link?",
-        options: ["Click immediately", "Ignore", "Verify through official site"],
-        answer: 2
-      },
-      {
-        question: "What should you check before clicking a link?",
-        options: ["If it looks familiar", "If the URL is correct", "If it's urgent"],
-        answer: 1
-      },
-      {
-        question: "What is phishing?",
-        options: ["A type of firewall", "A fraudulent attempt to obtain sensitive info", "A safe email campaign"],
-        answer: 1
-      },
-      {
-        question: "Which of these is a secure website?",
-        options: ["http://mybank.com", "https://mybank.com", "www.mybank.com"],
-        answer: 1
-      },
-      {
-        question: "How often should you update your password?",
-        options: ["Never", "Once a year", "Every 3-6 months"],
-        answer: 2
-      },
-      {
-        question: "What is two-factor authentication?",
-        options: ["A password twice", "A second layer of security", "A backup email"],
-        answer: 1
-      },
-      {
-        question: "What should you do if you receive a suspicious attachment?",
-        options: ["Open it carefully", "Scan with antivirus", "Forward to IT"],
-        answer: 2
-      },
-      {
-        question: "Which is a secure practice?",
-        options: ["Using the same password", "Writing down passwords", "Using a password manager"],
-        answer: 2
-      }
+      {question: "Which password is the strongest?", options: ["password123", "Verano2024", "T&g9$Lp!2z"], answer: 2},
+      {question: "Which email looks suspicious?", options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"], answer: 2},
+      {question: "What do you do with a security alert link?", options: ["Click immediately", "Ignore", "Verify through official site"], answer: 2},
+      {question: "What should you check before clicking a link?", options: ["If it looks familiar", "If the URL is correct", "If it's urgent"], answer: 1},
+      {question: "What is phishing?", options: ["A type of firewall", "A fraudulent attempt to obtain sensitive info", "A safe email campaign"], answer: 1},
+      {question: "Which of these is a secure website?", options: ["http://mybank.com", "https://mybank.com", "www.mybank.com"], answer: 1},
+      {question: "How often should you update your password?", options: ["Never", "Once a year", "Every 3-6 months"], answer: 2},
+      {question: "What is two-factor authentication?", options: ["A password twice", "A second layer of security", "A backup email"], answer: 1},
+      {question: "What should you do if you receive a suspicious attachment?", options: ["Open it carefully", "Scan with antivirus", "Forward to IT"], answer: 2},
+      {question: "Which is a secure practice?", options: ["Using the same password", "Writing down passwords", "Using a password manager"], answer: 2}
     ];
 
     let current = 0;
     let time = 0;
+    let score = 0;
+    let lives = 3;
     let timerInterval = setInterval(() => {
       time++;
       document.getElementById('timer').innerText = `Time: ${time}s`;
@@ -122,17 +97,34 @@
     }
 
     function checkAnswer(index) {
+      const correctSound = document.getElementById('correctSound');
+      const incorrectSound = document.getElementById('incorrectSound');
       if (index === questions[current].answer) {
+        correctSound.play();
+        const points = Math.max(100 - time * 2, 10);
+        score += points;
+        document.getElementById('score').innerText = `Score: ${score}`;
         current++;
         if (current < questions.length) {
-          loadQuestion();
+          setTimeout(loadQuestion, 1000);
         } else {
           clearInterval(timerInterval);
           document.getElementById('questions').innerHTML = '';
-          document.getElementById('finalMessage').innerText = `🎉 Completed in ${time} seconds! 🎉`;
+          document.getElementById('finalMessage').innerText = `🎉 Completed with ${score} points in ${time} seconds! 🎉`;
         }
       } else {
-        alert('❌ Incorrect! Try again.');
+        incorrectSound.play();
+        lives--;
+        document.getElementById('lives').innerText = `Lives: ${lives}`;
+        if (lives <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('questions').innerHTML = '';
+          document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
+        } else {
+          const container = document.getElementById('questions');
+          container.innerHTML += '<p class="incorrect">❌ Incorrect! Try again.</p>';
+          setTimeout(loadQuestion, 1000);
+        }
       }
     }
 
