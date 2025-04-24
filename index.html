@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ghost Hacker Escape</title>
+  <title>Cybersecurity Escape</title>
   <style>
     body {
       background-color: #0f0f0f;
@@ -16,34 +16,9 @@
     .container {
       padding: 50px;
     }
-    .typewriter {
-      display: inline-block;
-      overflow: hidden;
-      border-right: .15em solid #00ff00;
-      white-space: nowrap;
-      margin: 0 auto;
-      letter-spacing: .15em;
-      animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: #00ff00; }
-    }
     .challenge {
       display: none;
       margin-top: 40px;
-    }
-    .input-area input {
-      padding: 10px;
-      font-size: 1em;
-      background: #111;
-      border: 1px solid #00ff00;
-      color: #00ff00;
-      border-radius: 5px;
     }
     button {
       padding: 10px 20px;
@@ -52,7 +27,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
+      margin: 10px;
     }
     #timer {
       margin-top: 20px;
@@ -67,104 +42,101 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="typewriter">WELCOME TO THE GHOST HACKER ESCAPE</h1>
+    <h1>Cybersecurity Escape</h1>
     <div id="timer">Time: 0s</div>
-    <div class="challenge" id="challenge1">
-      <h2>Level 1: Choose the Strongest Password</h2>
-      <p>Which password is the strongest?</p>
-      <div>
-        <button onclick="checkAnswer1('password123')">password123</button>
-        <button onclick="checkAnswer1('Verano2024')">Verano2024</button>
-        <button onclick="checkAnswer1('T&g9$Lp!2z')">T&amp;g9$Lp!2z</button>
-      </div>
-      <p id="feedback1"></p>
-    </div>
-
-    <div class="challenge" id="challenge2">
-      <h2>Level 2: Identify the Phishing Email</h2>
-      <p>Which of the following emails looks suspicious?</p>
-      <div>
-        <button onclick="checkAnswer2(1)">invoice@trustedvendor.com</button>
-        <button onclick="checkAnswer2(2)">security@yourbank.com</button>
-        <button onclick="checkAnswer2(3)">support@amaz0n-security.com</button>
-      </div>
-      <p id="feedback2"></p>
-    </div>
-
-    <div class="challenge" id="challenge3">
-      <h2>Level 3: Security Alert Response</h2>
-      <p>You receive a security alert: "Your account is locked. Click here to verify." What do you do?</p>
-      <div>
-        <button onclick="checkAnswer3('click')">Click the link immediately</button>
-        <button onclick="checkAnswer3('ignore')">Ignore the message</button>
-        <button onclick="checkAnswer3('verify')">Go to the official website to verify</button>
-      </div>
-      <p id="feedback3"></p>
-    </div>
+    <div id="questions"></div>
     <div id="finalMessage"></div>
   </div>
 
   <script>
+    const questions = [
+      {
+        question: "Which password is the strongest?",
+        options: ["password123", "Verano2024", "T&g9$Lp!2z"],
+        answer: 2
+      },
+      {
+        question: "Which email looks suspicious?",
+        options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"],
+        answer: 2
+      },
+      {
+        question: "What do you do with a security alert link?",
+        options: ["Click immediately", "Ignore", "Verify through official site"],
+        answer: 2
+      },
+      {
+        question: "What should you check before clicking a link?",
+        options: ["If it looks familiar", "If the URL is correct", "If it's urgent"],
+        answer: 1
+      },
+      {
+        question: "What is phishing?",
+        options: ["A type of firewall", "A fraudulent attempt to obtain sensitive info", "A safe email campaign"],
+        answer: 1
+      },
+      {
+        question: "Which of these is a secure website?",
+        options: ["http://mybank.com", "https://mybank.com", "www.mybank.com"],
+        answer: 1
+      },
+      {
+        question: "How often should you update your password?",
+        options: ["Never", "Once a year", "Every 3-6 months"],
+        answer: 2
+      },
+      {
+        question: "What is two-factor authentication?",
+        options: ["A password twice", "A second layer of security", "A backup email"],
+        answer: 1
+      },
+      {
+        question: "What should you do if you receive a suspicious attachment?",
+        options: ["Open it carefully", "Scan with antivirus", "Forward to IT"],
+        answer: 2
+      },
+      {
+        question: "Which is a secure practice?",
+        options: ["Using the same password", "Writing down passwords", "Using a password manager"],
+        answer: 2
+      }
+    ];
+
+    let current = 0;
     let time = 0;
-    let timerInterval;
+    let timerInterval = setInterval(() => {
+      time++;
+      document.getElementById('timer').innerText = `Time: ${time}s`;
+    }, 1000);
 
-    function startTimer() {
-      timerInterval = setInterval(() => {
-        time++;
-        document.getElementById('timer').innerText = `Time: ${time}s`;
-      }, 1000);
+    function loadQuestion() {
+      const q = questions[current];
+      const container = document.getElementById('questions');
+      container.innerHTML = `<h2>Question ${current + 1}</h2><p>${q.question}</p>`;
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i);
+        container.appendChild(btn);
+      });
     }
 
-    function stopTimer() {
-      clearInterval(timerInterval);
-    }
-
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById('challenge1').style.display = 'block';
-        startTimer();
-      }, 4000);
-    }
-
-    function checkAnswer1(answer) {
-      const feedback = document.getElementById('feedback1');
-      if (answer === 'T&g9$Lp!2z') {
-        feedback.innerHTML = '✅ Correct! Proceeding to the next level...';
-        setTimeout(() => {
-          document.getElementById('challenge1').style.display = 'none';
-          document.getElementById('challenge2').style.display = 'block';
-        }, 1500);
+    function checkAnswer(index) {
+      if (index === questions[current].answer) {
+        current++;
+        if (current < questions.length) {
+          loadQuestion();
+        } else {
+          clearInterval(timerInterval);
+          document.getElementById('questions').innerHTML = '';
+          document.getElementById('finalMessage').innerText = `🎉 Completed in ${time} seconds! 🎉`;
+        }
       } else {
-        feedback.innerHTML = '❌ Incorrect. Think about strong password rules.';
+        alert('❌ Incorrect! Try again.');
       }
     }
 
-    function checkAnswer2(option) {
-      const feedback = document.getElementById('feedback2');
-      if (option === 3) {
-        feedback.innerHTML = '✅ Well spotted! That email is suspicious. Proceeding to the next level...';
-        setTimeout(() => {
-          document.getElementById('challenge2').style.display = 'none';
-          document.getElementById('challenge3').style.display = 'block';
-        }, 1500);
-      } else {
-        feedback.innerHTML = '❌ Incorrect. Think about common phishing tricks.';
-      }
-    }
-
-    function checkAnswer3(action) {
-      const feedback = document.getElementById('feedback3');
-      if (action === 'verify') {
-        feedback.innerHTML = '✅ Correct action!';
-        setTimeout(() => {
-          stopTimer();
-          document.getElementById('challenge3').style.display = 'none';
-          document.getElementById('finalMessage').innerText = `🎉 You completed the Ghost Hacker Escape in ${time} seconds! 🎉`;
-        }, 1500);
-      } else {
-        feedback.innerHTML = '❌ Incorrect. Always verify directly through the official site.';
-      }
-    }
+    window.onload = loadQuestion;
   </script>
 </body>
 </html>
