@@ -41,10 +41,16 @@
     .correct {
       color: #00ff00;
       font-weight: bold;
+      animation: flash 0.5s ease-in-out 2;
     }
     .incorrect {
       color: #ff0000;
       font-weight: bold;
+    }
+    @keyframes flash {
+      0% { color: #00ff00; }
+      50% { color: #ffffff; }
+      100% { color: #00ff00; }
     }
   </style>
 </head>
@@ -58,7 +64,7 @@
     <div id="finalMessage"></div>
   </div>
 
-  <audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum_hit.ogg"></audio>
   <audio id="incorrectSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
   <script>
@@ -99,30 +105,32 @@
     function checkAnswer(index) {
       const correctSound = document.getElementById('correctSound');
       const incorrectSound = document.getElementById('incorrectSound');
+      const container = document.getElementById('questions');
+
       if (index === questions[current].answer) {
         correctSound.play();
         const points = Math.max(100 - time * 2, 10);
         score += points;
         document.getElementById('score').innerText = `Score: ${score}`;
+        container.innerHTML += '<p class="correct">✅ Correct!</p>';
         current++;
         if (current < questions.length) {
           setTimeout(loadQuestion, 1000);
         } else {
           clearInterval(timerInterval);
-          document.getElementById('questions').innerHTML = '';
+          container.innerHTML = '';
           document.getElementById('finalMessage').innerText = `🎉 Completed with ${score} points in ${time} seconds! 🎉`;
         }
       } else {
         incorrectSound.play();
         lives--;
         document.getElementById('lives').innerText = `Lives: ${lives}`;
+        container.innerHTML += '<p class="incorrect">❌ Incorrect! Try again.</p>';
         if (lives <= 0) {
           clearInterval(timerInterval);
-          document.getElementById('questions').innerHTML = '';
+          container.innerHTML = '';
           document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
         } else {
-          const container = document.getElementById('questions');
-          container.innerHTML += '<p class="incorrect">❌ Incorrect! Try again.</p>';
           setTimeout(loadQuestion, 1000);
         }
       }
