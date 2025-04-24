@@ -70,17 +70,18 @@
     <h1 class="typewriter">WELCOME TO THE GHOST HACKER ESCAPE</h1>
     <div id="timer">Time: 0s</div>
     <div class="challenge" id="challenge1">
-      <h2>Level 1: Decode the message</h2>
-      <p>Message: Z2hvc3RoYWNrZXI=</p>
-      <div class="input-area">
-        <input type="text" id="answer1" placeholder="Enter your answer here">
-        <button onclick="checkAnswer1()">Submit</button>
+      <h2>Level 1: Choose the Strongest Password</h2>
+      <p>Which password is the strongest?</p>
+      <div>
+        <button onclick="checkAnswer1('password123')">password123</button>
+        <button onclick="checkAnswer1('Verano2024')">Verano2024</button>
+        <button onclick="checkAnswer1('T&g9$Lp!2z')">T&amp;g9$Lp!2z</button>
       </div>
       <p id="feedback1"></p>
     </div>
 
     <div class="challenge" id="challenge2">
-      <h2>Level 2: Identify the phishing email</h2>
+      <h2>Level 2: Identify the Phishing Email</h2>
       <p>Which of the following emails looks suspicious?</p>
       <div>
         <button onclick="checkAnswer2(1)">invoice@trustedvendor.com</button>
@@ -91,11 +92,12 @@
     </div>
 
     <div class="challenge" id="challenge3">
-      <h2>Level 3: Terminal Challenge</h2>
-      <p>Simulate a command line. Enter the correct command to list all files:</p>
-      <div class="input-area">
-        <input type="text" id="answer3" placeholder="Enter command">
-        <button onclick="checkAnswer3()">Submit</button>
+      <h2>Level 3: Security Alert Response</h2>
+      <p>You receive a security alert: "Your account is locked. Click here to verify." What do you do?</p>
+      <div>
+        <button onclick="checkAnswer3('click')">Click the link immediately</button>
+        <button onclick="checkAnswer3('ignore')">Ignore the message</button>
+        <button onclick="checkAnswer3('verify')">Go to the official website to verify</button>
       </div>
       <p id="feedback3"></p>
     </div>
@@ -124,17 +126,16 @@
       }, 4000);
     }
 
-    function checkAnswer1() {
-      const userAnswer = document.getElementById('answer1').value.trim().toLowerCase();
+    function checkAnswer1(answer) {
       const feedback = document.getElementById('feedback1');
-      if (userAnswer === 'ghosthacker') {
+      if (answer === 'T&g9$Lp!2z') {
         feedback.innerHTML = '✅ Correct! Proceeding to the next level...';
         setTimeout(() => {
           document.getElementById('challenge1').style.display = 'none';
           document.getElementById('challenge2').style.display = 'block';
         }, 1500);
       } else {
-        feedback.innerHTML = '❌ Incorrect. Try again.';
+        feedback.innerHTML = '❌ Incorrect. Think about strong password rules.';
       }
     }
 
@@ -151,18 +152,17 @@
       }
     }
 
-    function checkAnswer3() {
-      const userAnswer = document.getElementById('answer3').value.trim().toLowerCase();
+    function checkAnswer3(action) {
       const feedback = document.getElementById('feedback3');
-      if (userAnswer === 'ls' || userAnswer === 'dir') {
-        feedback.innerHTML = '✅ Access granted!';
+      if (action === 'verify') {
+        feedback.innerHTML = '✅ Correct action!';
         setTimeout(() => {
           stopTimer();
           document.getElementById('challenge3').style.display = 'none';
           document.getElementById('finalMessage').innerText = `🎉 You completed the Ghost Hacker Escape in ${time} seconds! 🎉`;
         }, 1500);
       } else {
-        feedback.innerHTML = '❌ Incorrect command. Try again.';
+        feedback.innerHTML = '❌ Incorrect. Always verify directly through the official site.';
       }
     }
   </script>
