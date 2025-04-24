@@ -5,54 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cybersecurity Escape</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
     body {
-      background-color: #0f0f0f;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
+      background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .container {
-      padding: 50px;
+      background-color: #242424;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      max-width: 500px;
+      width: 90%;
+    }
+    h1 {
+      color: #ff4b2b;
+      margin-bottom: 20px;
     }
     button {
-      padding: 10px 20px;
-      background: #00ff00;
-      color: #0f0f0f;
+      padding: 12px 24px;
+      background: #ff4b2b;
+      color: #ffffff;
       border: none;
-      border-radius: 5px;
+      border-radius: 30px;
       cursor: pointer;
-      margin: 10px;
+      margin: 10px auto;
+      font-weight: 700;
+      transition: background 0.3s ease;
+      display: block;
+      width: 80%;
+    }
+    button:hover {
+      background: #e84324;
     }
     #timer, #score, #lives {
       margin-top: 20px;
       font-size: 1.2em;
+      color: #f0f0f0;
     }
     #finalMessage {
       font-size: 1.5em;
       margin-top: 30px;
-      color: #00ff00;
+      color: #ff4b2b;
     }
     .correct {
-      color: #00ff00;
+      color: #4caf50;
       font-weight: bold;
       animation: flash 0.5s ease-in-out 2;
     }
     .incorrect {
-      color: #ff0000;
+      color: #ff4b2b;
       font-weight: bold;
     }
     @keyframes flash {
-      0% { color: #00ff00; }
+      0% { color: #4caf50; }
       50% { color: #ffffff; }
-      100% { color: #00ff00; }
+      100% { color: #4caf50; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Cybersecurity Escape</h1>
+    <input type="email" id="email" placeholder="Enter your email" style="padding:10px; border-radius:5px; border:none; margin-bottom:20px; width:80%;"><br>
     <div id="timer">Time: 0s</div>
     <div id="score">Score: 0</div>
     <div id="lives">Lives: 3</div>
@@ -67,14 +92,7 @@
     const questions = [
       {question: "Which password is the strongest?", options: ["password123", "Verano2024", "T&g9$Lp!2z"], answer: 2},
       {question: "Which email looks suspicious?", options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"], answer: 2},
-      {question: "What do you do with a security alert link?", options: ["Click immediately", "Ignore", "Verify through official site"], answer: 2},
-      {question: "What should you check before clicking a link?", options: ["If it looks familiar", "If the URL is correct", "If it's urgent"], answer: 1},
-      {question: "What is phishing?", options: ["A type of firewall", "A fraudulent attempt to obtain sensitive info", "A safe email campaign"], answer: 1},
-      {question: "Which of these is a secure website?", options: ["http://mybank.com", "https://mybank.com", "www.mybank.com"], answer: 1},
-      {question: "How often should you update your password?", options: ["Never", "Once a year", "Every 3-6 months"], answer: 2},
-      {question: "What is two-factor authentication?", options: ["A password twice", "A second layer of security", "A backup email"], answer: 1},
-      {question: "What should you do if you receive a suspicious attachment?", options: ["Open it carefully", "Scan with antivirus", "Forward to IT"], answer: 2},
-      {question: "Which is a secure practice?", options: ["Using the same password", "Writing down passwords", "Using a password manager"], answer: 2}
+      {question: "What do you do with a security alert link?", options: ["Click immediately", "Ignore", "Verify through official site"], answer: 2}
     ];
 
     let current = 0;
@@ -83,13 +101,13 @@
     let lives = 3;
     let timerInterval = setInterval(() => {
       time++;
-      document.getElementById('timer').innerText = Time: ${time}s;
+      document.getElementById('timer').innerText = `Time: ${time}s`;
     }, 1000);
 
     function loadQuestion() {
       const q = questions[current];
       const container = document.getElementById('questions');
-      container.innerHTML = <h2>Question ${current + 1}</h2><p>${q.question}</p>;
+      container.innerHTML = `<h2>Question ${current + 1}</h2><p>${q.question}</p>`;
       q.options.forEach((opt, i) => {
         const btn = document.createElement('button');
         btn.innerText = opt;
@@ -107,7 +125,7 @@
         correctSound.play();
         const points = Math.max(100 - time * 2, 10);
         score += points;
-        document.getElementById('score').innerText = Score: ${score};
+        document.getElementById('score').innerText = `Score: ${score}`;
         container.innerHTML += '<p class="correct">✅ Correct!</p>';
         current++;
         if (current < questions.length) {
@@ -115,17 +133,17 @@
         } else {
           clearInterval(timerInterval);
           container.innerHTML = '';
-          document.getElementById('finalMessage').innerText = 🎉 Completed with ${score} points in ${time} seconds! 🎉;
+          document.getElementById('finalMessage').innerText = `🎉 Completed with ${score} points in ${time} seconds! 🎉`;
         }
       } else {
         incorrectSound.play();
         lives--;
-        document.getElementById('lives').innerText = Lives: ${lives};
+        document.getElementById('lives').innerText = `Lives: ${lives}`;
         container.innerHTML += '<p class="incorrect">❌ Incorrect! Try again.</p>';
         if (lives <= 0) {
           clearInterval(timerInterval);
           container.innerHTML = '';
-          document.getElementById('finalMessage').innerText = 💀 Game Over! Final Score: ${score};
+          document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
         } else {
           setTimeout(loadQuestion, 1000);
         }
