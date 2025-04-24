@@ -134,6 +134,7 @@
           clearInterval(timerInterval);
           container.innerHTML = '';
           document.getElementById('finalMessage').innerText = `🎉 Completed with ${score} points in ${time} seconds! 🎉`;
+          sendData();
         }
       } else {
         incorrectSound.play();
@@ -148,6 +149,20 @@
           setTimeout(loadQuestion, 1000);
         }
       }
+    }
+
+    function sendData() {
+      const email = document.getElementById('email').value;
+      if (!email) {
+        alert('Please enter your email.');
+        return;
+      }
+      fetch('https://script.google.com/macros/s/AKfycbxMharAaFudMlu3LtY521wQBS6-SakgSElXMQuvEpysN1ASqTN6_0Bac9mL9sUKP53m6A/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, score: score, time: time })
+      }).then(() => console.log('Data sent'));
     }
 
     window.onload = loadQuestion;
