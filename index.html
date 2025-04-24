@@ -54,7 +54,6 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    .hidden { display: none; }
     #timer {
       margin-top: 20px;
       font-size: 1.2em;
@@ -80,7 +79,7 @@
       <p id="feedback1"></p>
     </div>
 
-    <div class="challenge hidden" id="challenge2">
+    <div class="challenge" id="challenge2">
       <h2>Level 2: Identify the phishing email</h2>
       <p>Which of the following emails looks suspicious?</p>
       <div>
@@ -91,7 +90,7 @@
       <p id="feedback2"></p>
     </div>
 
-    <div class="challenge hidden" id="challenge3">
+    <div class="challenge" id="challenge3">
       <h2>Level 3: Terminal Challenge</h2>
       <p>Simulate a command line. Enter the correct command to list all files:</p>
       <div class="input-area">
@@ -131,8 +130,8 @@
       if (userAnswer === 'ghosthacker') {
         feedback.innerHTML = '✅ Correct! Proceeding to the next level...';
         setTimeout(() => {
-          document.getElementById('challenge1').classList.add('hidden');
-          document.getElementById('challenge2').classList.remove('hidden');
+          document.getElementById('challenge1').style.display = 'none';
+          document.getElementById('challenge2').style.display = 'block';
         }, 1500);
       } else {
         feedback.innerHTML = '❌ Incorrect. Try again.';
@@ -144,8 +143,8 @@
       if (option === 3) {
         feedback.innerHTML = '✅ Well spotted! That email is suspicious. Proceeding to the next level...';
         setTimeout(() => {
-          document.getElementById('challenge2').classList.add('hidden');
-          document.getElementById('challenge3').classList.remove('hidden');
+          document.getElementById('challenge2').style.display = 'none';
+          document.getElementById('challenge3').style.display = 'block';
         }, 1500);
       } else {
         feedback.innerHTML = '❌ Incorrect. Think about common phishing tricks.';
@@ -159,7 +158,7 @@
         feedback.innerHTML = '✅ Access granted!';
         setTimeout(() => {
           stopTimer();
-          document.getElementById('challenge3').classList.add('hidden');
+          document.getElementById('challenge3').style.display = 'none';
           document.getElementById('finalMessage').innerText = `🎉 You completed the Ghost Hacker Escape in ${time} seconds! 🎉`;
         }, 1500);
       } else {
