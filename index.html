@@ -39,9 +39,11 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      margin: 10px;
+      margin: 10px auto;
       font-weight: 700;
       transition: background 0.3s ease;
+      display: block;
+      width: 80%;
     }
     button:hover {
       background: #e84324;
@@ -87,29 +89,65 @@
   <audio id="incorrectSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
   <script>
-    const questions = [...]; // same questions as before
+    const questions = [
+      {question: "Which password is the strongest?", options: ["password123", "Verano2024", "T&g9$Lp!2z"], answer: 2},
+      {question: "Which email looks suspicious?", options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"], answer: 2},
+      {question: "What do you do with a security alert link?", options: ["Click immediately", "Ignore", "Verify through official site"], answer: 2}
+    ];
 
-    let current = 0, time = 0, score = 0, lives = 3;
+    let current = 0;
+    let time = 0;
+    let score = 0;
+    let lives = 3;
     let timerInterval = setInterval(() => {
       time++;
       document.getElementById('timer').innerText = `Time: ${time}s`;
     }, 1000);
 
-    function loadQuestion() { ... } // unchanged
+    function loadQuestion() {
+      const q = questions[current];
+      const container = document.getElementById('questions');
+      container.innerHTML = `<h2>Question ${current + 1}</h2><p>${q.question}</p>`;
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i);
+        container.appendChild(btn);
+      });
+    }
 
-    function checkAnswer(index) { ... } // unchanged
+    function checkAnswer(index) {
+      const correctSound = document.getElementById('correctSound');
+      const incorrectSound = document.getElementById('incorrectSound');
+      const container = document.getElementById('questions');
 
-    function sendResults() {
-      const email = document.getElementById('email').value;
-      const data = new URLSearchParams();
-      data.append('email', email);
-      data.append('score', score);
-      data.append('time', time);
-
-      fetch('https://script.google.com/a/macros/domestika.org/s/AKfycbzj7APd6U2_kR5x-is0soQnInnrA6PXyAUkjo5K4m9VCqIxrL8TUBVSG0yR8iV6baoF/exec', {
-        method: 'POST',
-        body: data
-      }).then(response => console.log('Data sent to Google Sheet'));
+      if (index === questions[current].answer) {
+        correctSound.play();
+        const points = Math.max(100 - time * 2, 10);
+        score += points;
+        document.getElementById('score').innerText = `Score: ${score}`;
+        container.innerHTML += '<p class="correct">✅ Correct!</p>';
+        current++;
+        if (current < questions.length) {
+          setTimeout(loadQuestion, 1000);
+        } else {
+          clearInterval(timerInterval);
+          container.innerHTML = '';
+          document.getElementById('finalMessage').innerText = `🎉 Completed with ${score} points in ${time} seconds! 🎉`;
+        }
+      } else {
+        incorrectSound.play();
+        lives--;
+        document.getElementById('lives').innerText = `Lives: ${lives}`;
+        container.innerHTML += '<p class="incorrect">❌ Incorrect! Try again.</p>';
+        if (lives <= 0) {
+          clearInterval(timerInterval);
+          container.innerHTML = '';
+          document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
+        } else {
+          setTimeout(loadQuestion, 1000);
+        }
+      }
     }
 
     window.onload = loadQuestion;
