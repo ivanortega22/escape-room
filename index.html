@@ -96,6 +96,7 @@
   <audio id="incorrectSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
   <script>
+    // Define quiz questions with options and correct answers
     const questions = [
       {question: "Which password is the strongest?", options: ["password123", "Verano2024", "T&g9$Lp!2z"], answer: 2},
       {question: "Which email looks suspicious?", options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"], answer: 2},
@@ -109,15 +110,18 @@
       {question: "Which is a secure practice?", options: ["Using the same password", "Writing down passwords", "Using a password manager"], answer: 2}
     ];
 
-    let current = 0;
-    let time = 0;
-    let score = 0;
-    let lives = 3;
+    let current = 0;  // Current question index
+    let time = 0;     // Elapsed time
+    let score = 0;    // Player's score
+    let lives = 3;    // Remaining lives
+
+    // Start the timer that updates every second
     let timerInterval = setInterval(() => {
       time++;
       document.getElementById('timer').innerText = `Time: ${time}s`;
     }, 1000);
 
+    // Load the current question and generate answer buttons with folder icons
     function loadQuestion() {
       const q = questions[current];
       const container = document.getElementById('questions');
@@ -131,6 +135,7 @@
       });
     }
 
+    // Check if the selected answer is correct, update score or lives, and proceed
     function checkAnswer(index) {
       const correctSound = document.getElementById('correctSound');
       const incorrectSound = document.getElementById('incorrectSound');
@@ -166,26 +171,4 @@
       }
     }
 
-    function sendData() {
-      const email = document.getElementById('email').value;
-      if (!email) {
-        alert('Please enter your email.');
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('entry.69344473', email);
-      formData.append('entry.1881670432', score);
-      formData.append('entry.1352149982', time);
-
-      fetch('https://docs.google.com/forms/u/0/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse', {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      }).then(() => console.log('Form submitted!'));
-    }
-
-    window.onload = loadQuestion;
-  </script>
-</body>
-</html>
+    // Send the player's email, score,
