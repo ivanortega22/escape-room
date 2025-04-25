@@ -160,6 +160,7 @@
           clearInterval(timerInterval);
           container.innerHTML = '';
           document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
+          sendData(); // <-- Esta línea envía los datos también cuando pierdes
         } else {
           setTimeout(loadQuestion, 1000);
         }
