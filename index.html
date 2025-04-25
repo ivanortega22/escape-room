@@ -32,21 +32,28 @@
       color: #ff4b2b;
       margin-bottom: 20px;
     }
-    button {
+    .answer-btn {
       padding: 12px 24px;
-      background: #ff4b2b;
+      background: #333;
       color: #ffffff;
       border: none;
-      border-radius: 30px;
+      border-radius: 12px;
       cursor: pointer;
       margin: 10px auto;
       font-weight: 700;
-      transition: background 0.3s ease;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 80%;
+      transition: background 0.3s ease;
     }
-    button:hover {
-      background: #e84324;
+    .answer-btn:hover {
+      background: #555;
+    }
+    .folder-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
     }
     #timer, #score, #lives {
       margin-top: 20px;
@@ -110,7 +117,8 @@
       container.innerHTML = `<h2>Question ${current + 1}</h2><p>${q.question}</p>`;
       q.options.forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.innerText = opt;
+        btn.classList.add('answer-btn');
+        btn.innerHTML = `<svg class="folder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffcc00"><path d="M10 4H2v16h20V6H12l-2-2z"/></svg>${opt}`;
         btn.onclick = () => checkAnswer(i);
         container.appendChild(btn);
       });
@@ -152,23 +160,23 @@
     }
 
     function sendData() {
-  const email = document.getElementById('email').value;
-  if (!email) {
-    alert('Please enter your email.');
-    return;
-  }
+      const email = document.getElementById('email').value;
+      if (!email) {
+        alert('Please enter your email.');
+        return;
+      }
 
-  const formData = new FormData();
-  formData.append('entry.69344473', email);    // Email
-  formData.append('entry.1881670432', score);  // Score
-  formData.append('entry.1352149982', time);   // Time
+      const formData = new FormData();
+      formData.append('entry.69344473', email);
+      formData.append('entry.1881670432', score);
+      formData.append('entry.1352149982', time);
 
-  fetch('https://docs.google.com/forms/u/0/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse', {
-    method: 'POST',
-    mode: 'no-cors',
-    body: formData
-  }).then(() => console.log('Form submitted!'));
-}
+      fetch('https://docs.google.com/forms/u/0/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).then(() => console.log('Form submitted!'));
+    }
 
     window.onload = loadQuestion;
   </script>
