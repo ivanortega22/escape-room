@@ -157,12 +157,19 @@
         alert('Please enter your email.');
         return;
       }
-      fetch('https://script.google.com/macros/s/AKfycbzj7APd6U2_kR5x-is0soQnInnrA6PXyAUkjo5K4m9VCqIxrL8TUBVSG0yR8iV6baoF/exec', {
+
+      const formURL = 'https://docs.google.com/forms/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse'; // Tu URL del form
+
+      const formData = new FormData();
+      formData.append('entry.69344473', email); // Email
+      formData.append('entry.1881670432', score); // Score
+      formData.append('entry.1352149982', time);  // Time
+
+      fetch(formURL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, score: score, time: time })
-      }).then(() => console.log('Data sent'));
+        body: formData
+      }).then(() => console.log('Data sent to Google Forms'));
     }
 
     window.onload = loadQuestion;
