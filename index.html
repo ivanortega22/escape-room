@@ -113,7 +113,6 @@
     let time = 0;
     let score = 0;
     let lives = 3;
-
     let timerInterval = setInterval(() => {
       time++;
       document.getElementById('timer').innerText = `Time: ${time}s`;
@@ -161,7 +160,6 @@
           clearInterval(timerInterval);
           container.innerHTML = '';
           document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
-          sendData();
         } else {
           setTimeout(loadQuestion, 1000);
         }
@@ -178,4 +176,16 @@
       const formData = new FormData();
       formData.append('entry.69344473', email);
       formData.append('entry.1881670432', score);
-      formData.append('entry.1352149982
+      formData.append('entry.1352149982', time);
+
+      fetch('https://docs.google.com/forms/u/0/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).then(() => console.log('Form submitted!'));
+    }
+
+    window.onload = loadQuestion;
+  </script>
+</body>
+</html>
