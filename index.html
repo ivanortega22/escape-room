@@ -96,7 +96,6 @@
   <audio id="incorrectSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
   <script>
-    // Array of quiz questions, each with text, options, and correct answer index
     const questions = [
       {question: "Which password is the strongest?", options: ["password123", "Verano2024", "T&g9$Lp!2z"], answer: 2},
       {question: "Which email looks suspicious?", options: ["invoice@trustedvendor.com", "security@yourbank.com", "support@amaz0n-security.com"], answer: 2},
@@ -110,21 +109,15 @@
       {question: "Which is a secure practice?", options: ["Using the same password", "Writing down passwords", "Using a password manager"], answer: 2}
     ];
 
-    let current = 0;  // Current question index
-    let time = 0;     // Time elapsed
-    let score = 0;    // Player score
-    let lives = 3;    // Remaining lives
-
-    // Timer function to update the displayed time every second
+    let current = 0;
+    let time = 0;
+    let score = 0;
+    let lives = 3;
     let timerInterval = setInterval(() => {
       time++;
       document.getElementById('timer').innerText = `Time: ${time}s`;
     }, 1000);
 
-    /**
-     * Loads the current question and generates the answer buttons.
-     * Each answer button includes a folder icon to enhance the visual design.
-     */
     function loadQuestion() {
       const q = questions[current];
       const container = document.getElementById('questions');
@@ -138,10 +131,6 @@
       });
     }
 
-    /**
-     * Checks if the selected answer is correct.
-     * Plays sounds, updates score/lives, and manages quiz progression.
-     */
     function checkAnswer(index) {
       const correctSound = document.getElementById('correctSound');
       const incorrectSound = document.getElementById('incorrectSound');
@@ -149,7 +138,7 @@
 
       if (index === questions[current].answer) {
         correctSound.play();
-        const points = Math.max(100 - time * 2, 10); // Points decrease with time taken
+        const points = Math.max(100 - time * 2, 10);
         score += points;
         document.getElementById('score').innerText = `Score: ${score}`;
         container.innerHTML += '<p class="correct">✅ Correct!</p>';
@@ -177,10 +166,6 @@
       }
     }
 
-    /**
-     * Sends the user's email, score, and time to a connected Google Form.
-     * This allows logging results for review.
-     */
     function sendData() {
       const email = document.getElementById('email').value;
       if (!email) {
@@ -189,8 +174,18 @@
       }
 
       const formData = new FormData();
-      formData.append('entry.69344473', email);  // Email field
-      formData.append('entry.1881670432', score);  // Score field
-      formData.append('entry.1352149982', time);   // Time field
+      formData.append('entry.69344473', email);
+      formData.append('entry.1881670432', score);
+      formData.append('entry.1352149982', time);
 
-      fetch('https://docs.google.com/forms/u/0/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9
+      fetch('https://docs.google.com/forms/u/0/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      }).then(() => console.log('Form submitted!'));
+    }
+
+    window.onload = loadQuestion;
+  </script>
+</body>
+</html>
