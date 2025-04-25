@@ -152,25 +152,25 @@
     }
 
     function sendData() {
-      const email = document.getElementById('email').value;
-      if (!email) {
-        alert('Please enter your email.');
-        return;
-      }
+  const email = document.getElementById('email').value;
+  if (!email) {
+    alert('Please enter your email.');
+    return;
+  }
 
-      const formURL = 'https://docs.google.com/forms/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse'; // Tu URL del form
+  const formURL = 'https://docs.google.com/forms/d/1SiorvIfG-thy0tuoCo48R84GyAqiu9InZxwEVCncQQQ/formResponse';
 
-      const formData = new FormData();
-      formData.append('entry.69344473', email); // Email
-      formData.append('entry.1881670432', score); // Score
-      formData.append('entry.1352149982', time);  // Time
+  const formData = new FormData();
+  formData.append('entry.69344473', email); // Campo Email
+  formData.append('entry.1881670432', score); // Campo Score
+  formData.append('entry.1352149982', time); // Campo Time
 
-      fetch(formURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      }).then(() => console.log('Data sent to Google Forms'));
-    }
+  fetch(formURL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  }).then(() => console.log('Data sent to Google Form'));
+}
 
     window.onload = loadQuestion;
   </script>
