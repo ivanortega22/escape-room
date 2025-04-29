@@ -80,7 +80,6 @@
       100% { color: #4caf50; }
     }
     #startButton {
-  padding: 12px 24px;
   background: #ff4b2b;
   color: #ffffff;
   border: none;
@@ -90,19 +89,30 @@
   font-size: 1.1em;
   transition: background 0.3s ease;
   width: 80%;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Espacio entre icono y texto */
 }
 
 #startButton:hover {
   background: #ff6f4d;
 }
 
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .start-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+#startButton:hover .start-icon {
+  transform: translateX(5px);
 }
   </style>
 </head>
@@ -112,10 +122,12 @@
   <h1>Cybersecurity Escape</h1>
   <input type="email" id="email" placeholder="Enter your email" style="padding:10px; border-radius:5px; border:none; margin-bottom:20px; width:80%;"><br>
 <button id="startButton" onclick="startGame()">
-  <svg class="start-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-    <path d="M10 17l5-5-5-5v10z"/>
-  </svg>
-  Start Quiz
+  <span class="btn-content">
+    <svg class="start-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+      <path d="M10 17l5-5-5-5v10z"/>
+    </svg>
+    Start Quiz
+  </span>
 </button>
 </div>
 
