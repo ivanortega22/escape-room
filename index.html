@@ -86,9 +86,7 @@
 <div id="startScreen">
   <h1>Cybersecurity Escape</h1>
   <input type="email" id="email" placeholder="Enter your email" style="padding:10px; border-radius:5px; border:none; margin-bottom:20px; width:80%;"><br>
-  <button onclick="startGame()" style="padding:12px 24px; background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%); color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:700; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s ease;">
-  🚀 Start Quiz
-</button>
+  <button onclick="startGame()">Start Quiz</button>
 </div>
 
 <!-- Contenedor del quiz oculto al inicio -->
@@ -123,17 +121,17 @@
     let lives = 3;
     let timerInterval = setInterval(() => {
       time++;
-      document.getElementById('timer').innerText = Time: ${time}s;
+      document.getElementById('timer').innerText = `Time: ${time}s`;
     }, 1000);
 
     function loadQuestion() {
       const q = questions[current];
       const container = document.getElementById('questions');
-      container.innerHTML = <h2>Question ${current + 1}</h2><p>${q.question}</p>;
+      container.innerHTML = `<h2>Question ${current + 1}</h2><p>${q.question}</p>`;
       q.options.forEach((opt, i) => {
         const btn = document.createElement('button');
         btn.classList.add('answer-btn');
-        btn.innerHTML = <svg class="folder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffcc00"><path d="M10 4H2v16h20V6H12l-2-2z"/></svg>${opt};
+        btn.innerHTML = `<svg class="folder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffcc00"><path d="M10 4H2v16h20V6H12l-2-2z"/></svg>${opt}`;
         btn.onclick = () => checkAnswer(i);
         container.appendChild(btn);
       });
@@ -148,7 +146,7 @@
         correctSound.play();
         const points = Math.max(100 - time * 2, 10);
         score += points;
-        document.getElementById('score').innerText = Score: ${score};
+        document.getElementById('score').innerText = `Score: ${score}`;
         container.innerHTML += '<p class="correct">✅ Correct!</p>';
         current++;
         if (current < questions.length) {
@@ -156,18 +154,18 @@
         } else {
           clearInterval(timerInterval);
           container.innerHTML = '';
-          document.getElementById('finalMessage').innerText = 🎉 Completed with ${score} points in ${time} seconds! 🎉;
+          document.getElementById('finalMessage').innerText = `🎉 Completed with ${score} points in ${time} seconds! 🎉`;
           sendData();
         }
       } else {
         incorrectSound.play();
         lives--;
-        document.getElementById('lives').innerText = Lives: ${lives};
+        document.getElementById('lives').innerText = `Lives: ${lives}`;
         container.innerHTML += '<p class="incorrect">❌ Incorrect! Try again.</p>';
         if (lives <= 0) {
           clearInterval(timerInterval);
           container.innerHTML = '';
-          document.getElementById('finalMessage').innerText = 💀 Game Over! Final Score: ${score};
+          document.getElementById('finalMessage').innerText = `💀 Game Over! Final Score: ${score}`;
           sendData(); // <-- Esta línea envía los datos también cuando pierdes
         } else {
           setTimeout(loadQuestion, 1000);
